@@ -68,7 +68,7 @@ def add_stats(model, model2=None, scope_name='train'):
             summaries.extend([
                     tf.summary.scalar('loss_mel',
                             model.mel_loss - model2.mel_loss),
-                    tf.summary.scalar('loss_linear', 
+                    tf.summary.scalar('loss_linear',
                             model.linear_loss - model2.linear_loss),
                     tf.summary.scalar('loss',
                             model.loss_without_coeff - model2.loss_without_coeff),
@@ -100,7 +100,7 @@ def save_and_plot_fn(args, log_dir, step, loss, prefix):
         plot.plot_alignment(
                 align, align_path, info=info_text,
                 text=sequence_to_text(seq,
-                        skip_eos_and_pad=True, combine_jamo=False), isKorean=False) 
+                        skip_eos_and_pad=True, combine_jamo=False), isKorean=False)
 
 def save_and_plot(sequences, spectrograms,
         alignments, log_dir, step, loss, prefix):
@@ -292,10 +292,10 @@ def main():
     parser.add_argument('--initialize_path', default=None)
 
     parser.add_argument('--num_test_per_speaker', type=int, default=2)
-    parser.add_argument('--random_seed', type=int, default=123)
-    parser.add_argument('--summary_interval', type=int, default=100)
-    parser.add_argument('--test_interval', type=int, default=500)
-    parser.add_argument('--checkpoint_interval', type=int, default=1000)
+    parser.add_argument('--random_seed', type=int, default=42)
+    parser.add_argument('--summary_interval', type=int, default=50)
+    parser.add_argument('--test_interval', type=int, default=250)
+    parser.add_argument('--checkpoint_interval', type=int, default=500)
     parser.add_argument('--skip_path_filter',
             type=str2bool, default=False, help='Use only for debugging')
 
@@ -316,11 +316,6 @@ def main():
     tf.set_random_seed(config.random_seed)
     print(config.data_paths)
 
-    if any("krbook" not in data_path for data_path in config.data_paths) and \
-            hparams.sample_rate != 20000:
-        warning("Detect non-krbook dataset. May need to set sampling rate from {} to 20000".\
-                format(hparams.sample_rate))
-        
     if any('LJ' in data_path for data_path in config.data_paths) and \
            hparams.sample_rate != 22050:
         warning("Detect LJ Speech dataset. Set sampling rate from {} to 22050".\

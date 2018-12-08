@@ -6,6 +6,9 @@ from tensorflow.contrib.seq2seq import Helper
 
 
 # Adapted from tf.contrib.seq2seq.GreedyEmbeddingHelper
+from tensorflow.python.framework import dtypes
+
+
 class TacoTestHelper(Helper):
   def __init__(self, batch_size, output_dim, r):
     with tf.name_scope('TacoTestHelper'):
@@ -16,6 +19,14 @@ class TacoTestHelper(Helper):
   @property
   def batch_size(self):
     return self._batch_size
+
+  @property
+  def sample_ids_shape(self):
+    return tf.TensorShape([])
+
+  @property
+  def sample_ids_dtype(self):
+    return dtypes.int32
 
   def initialize(self, name=None):
     return (tf.tile([False], [self._batch_size]), _go_frames(self._batch_size, self._output_dim))
@@ -50,6 +61,14 @@ class TacoTrainingHelper(Helper):
   @property
   def batch_size(self):
     return self._batch_size
+
+  @property
+  def sample_ids_shape(self):
+    return tf.TensorShape([])
+
+  @property
+  def sample_ids_dtype(self):
+    return dtypes.int32
 
   def initialize(self, name=None):
     return (tf.tile([False], [self._batch_size]), _go_frames(self._batch_size, self._output_dim))

@@ -8,25 +8,20 @@ def f(num):
 basic_params = {
     # Comma-separated list of cleaners to run on text prior to training and eval. For non-English
     # text, you may want to use "basic_cleaners" or "transliteration_cleaners" See TRAINING_DATA.md.
-    'cleaners': 'english_cleaners', #originally korean_cleaners
+    'cleaners': 'korean_cleaners', #originally korean_cleaners
 }
 
 basic_params.update({
     # Audio
     'num_mels': 80,
     'num_freq': 1025,
-    'sample_rate': 24000, # trained as 20000 but need to be 24000 
-    'frame_length_ms': 50,
-    'frame_shift_ms': 12.5,
+    'sample_rate': 44100, # trained as 20000 but need to be 24000
+    'frame_length_ms': 40,
+    'frame_shift_ms': 10,
     'preemphasis': 0.97,
     'min_level_db': -100,
     'ref_level_db': 20,
 })
-
-if True:
-    basic_params.update({
-        'sample_rate': 22050, #originally 24000 (krbook), 22050(lj-data), 20000(others) 
-    })
 
 basic_params.update({
     # Model
@@ -136,7 +131,7 @@ basic_params.update({
     'ignore_recognition_level': 0, # 0: use all, 1: ignore only unmatched_alignment, 2: fully ignore recognition
 
     # Eval
-    'min_tokens': 50,#originally 50, 30 is good for korean,
+    'min_tokens': 30,#originally 50, 30 is good for korean,
     'min_iters': 30,
     'max_iters': 200,
     'skip_inadequate': False,

@@ -2,7 +2,7 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.contrib.rnn import RNNCell
 from tensorflow.python.ops import rnn_cell_impl
-from tensorflow.contrib.data.python.util import nest
+from tensorflow.contrib.framework import nest
 from tensorflow.contrib.seq2seq.python.ops.attention_wrapper \
                 import _bahdanau_score, _BaseAttentionMechanism, BahdanauAttention, \
                              AttentionWrapperState, AttentionMechanism
@@ -175,13 +175,16 @@ class AttentionWrapper(RNNCell):
     @property
     def state_size(self):
         return AttentionWrapperState(
-                cell_state=self._cell.state_size,
-                time=tf.TensorShape([]),
-                attention=self._attention_layer_size,
-                alignments=self._item_or_tuple(
-                        a.alignments_size for a in self._attention_mechanisms),
-                alignment_history=self._item_or_tuple(
-                        () for _ in self._attention_mechanisms))    # sometimes a TensorArray
+            cell_state=self._cell.state_size,
+            time=tf.TensorShape([]),
+            attention=self._attention_layer_size,
+            alignments=self._item_or_tuple(
+                a.alignments_size for a in self._attention_mechanisms),
+            attention_state=self._item_or_tuple(
+                a.state_size for a in self._attention_mechanisms),
+            alignment_history=self._item_or_tuple(
+                a.alignments_size if self._alignment_history else ()
+                for a in self._attention_mechanisms))  # sometimes a TensorArray
 
     def zero_state(self, batch_size, dtype):
         with tf.name_scope(type(self).__name__ + "ZeroState", values=[batch_size]):
@@ -209,6 +212,9 @@ class AttentionWrapper(RNNCell):
                     attention=_zero_state_tensors(self._attention_layer_size, batch_size, dtype),
                     alignments=self._item_or_tuple(
                             attention_mechanism.initial_alignments(batch_size, dtype)
+                            for attention_mechanism in self._attention_mechanisms),
+                    attention_state=self._item_or_tuple(
+                            attention_mechanism.initial_state(batch_size, dtype)
                             for attention_mechanism in self._attention_mechanisms),
                     alignment_history=self._item_or_tuple(
                             tf.TensorArray(dtype=dtype, size=0, dynamic_size=True)
@@ -271,30 +277,31 @@ class AttentionWrapper(RNNCell):
             previous_alignments = [state.alignments]
             previous_alignment_history = [state.alignment_history]
 
-        all_alignments = []
-        all_attentions = []
-        all_histories = []
-
-        for i, attention_mechanism in enumerate(self._attention_mechanisms):
-            attention, alignments = _compute_attention(
-                    attention_mechanism, cell_output, previous_alignments[i],
-                    self._attention_layers[i] if self._attention_layers else None,
-                    self.is_manual_attention, self.manual_alignments, state.time)
-
-            alignment_history = previous_alignment_history[i].write(
+            all_alignments = []
+            all_attentions = []
+            all_attention_states = []
+            maybe_all_histories = []
+            for i, attention_mechanism in enumerate(self._attention_mechanisms):
+                attention, alignments, next_attention_state = _compute_attention(
+                        attention_mechanism, cell_output, previous_alignments[i],
+                        self._attention_layers[i] if self._attention_layers else None,
+                        self.is_manual_attention, self.manual_alignments, state.time)
+                alignment_history = previous_alignment_history[i].write(
                     state.time, alignments) if self._alignment_history else ()
 
-            all_alignments.append(alignments)
-            all_histories.append(alignment_history)
-            all_attentions.append(attention)
+                all_attention_states.append(next_attention_state)
+                all_alignments.append(alignments)
+                all_attentions.append(attention)
+                maybe_all_histories.append(alignment_history)
 
-        attention = tf.concat(all_attentions, 1)
-        next_state = AttentionWrapperState(
-                time=state.time + 1,
-                cell_state=next_cell_state,
-                attention=attention,
-                alignments=self._item_or_tuple(all_alignments),
-                alignment_history=self._item_or_tuple(all_histories))
+            attention = tf.concat(all_attentions, 1)
+            next_state = AttentionWrapperState(
+                    time=state.time + 1,
+                    cell_state=next_cell_state,
+                    attention=attention,
+                    attention_state=self._item_or_tuple(all_attention_states),
+                    alignments=self._item_or_tuple(all_alignments),
+                    alignment_history=self._item_or_tuple(maybe_all_histories))
 
         if self._output_attention:
             return attention, next_state
@@ -302,18 +309,18 @@ class AttentionWrapper(RNNCell):
             return cell_output, next_state
 
 def _compute_attention(
-        attention_mechanism, cell_output, previous_alignments,
+        attention_mechanism, cell_output, attention_state,
         attention_layer, is_manual_attention, manual_alignments, time):
 
-    computed_alignments = attention_mechanism(
-            cell_output, previous_alignments=previous_alignments)
+    alignments, next_attention_state = attention_mechanism(
+        cell_output, state=attention_state)
     batch_size, max_time = \
-            tf.shape(computed_alignments)[0], tf.shape(computed_alignments)[1]
+            tf.shape(alignments)[0], tf.shape(alignments)[1]
 
     alignments = tf.cond(
             is_manual_attention,
             lambda: manual_alignments[:, time, :],
-            lambda: computed_alignments,
+            lambda: alignments,
     )
 
     #alignments = tf.one_hot(tf.zeros((batch_size,), dtype=tf.int32), max_time, dtype=tf.float32)
@@ -338,7 +345,7 @@ def _compute_attention(
     else:
         attention = context
 
-    return attention, alignments
+    return attention, alignments, next_attention_state
 
 
 class DecoderPrenetWrapper(RNNCell):

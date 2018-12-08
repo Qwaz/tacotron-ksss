@@ -58,7 +58,7 @@ def generate_audio_response(text, speaker_id):
 
     model_name = os.path.basename(global_config.load_path)
     isKorean=global_config.is_korean
-    
+
     hashed_text = hashlib.md5(text.encode('utf-8')).hexdigest()
 
     relative_dir_path = os.path.join(AUDIO_DIR, model_name)
@@ -78,8 +78,8 @@ def generate_audio_response(text, speaker_id):
 
     return send_file(
             add_postfix(relative_audio_path, 0),
-            mimetype="audio/wav", 
-            as_attachment=True, 
+            mimetype="audio/wav",
+            as_attachment=True,
             attachment_filename=hashed_text + ".wav")
 
     response = make_response(audio)
@@ -89,7 +89,7 @@ def generate_audio_response(text, speaker_id):
 
 @app.route('/')
 def index():
-    text = request.args.get('text') or "µè°í ½ÍÀº ¹®ÀåÀ» ÀÔ·ÂÇØ ÁÖ¼¼¿ä."
+    text = request.args.get('text') or "ë“£ê³  ì‹¶ì€ ë¬¸ì¥ì„ ì…ë ¥í•´ ì£¼ì„¸ìš”."
     return render_template('index.html', text=text)
 
 @app.route('/generate')
