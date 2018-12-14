@@ -2,10 +2,10 @@ import re
 import string
 import numpy as np
 
-from text import cleaners
-from hparams import hparams
-from text.symbols import symbols, en_symbols, PAD, EOS
-from text.korean import jamo_to_korean
+from ..text import cleaners
+from ..hparams import hparams
+from ..text.symbols import symbols, en_symbols, PAD, EOS
+from ..text.korean import jamo_to_korean
 
 
 

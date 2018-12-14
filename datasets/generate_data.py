@@ -16,10 +16,10 @@ import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
 
-from hparams import hparams
-from text import text_to_sequence
-from utils import makedirs, remove_file, warning
-from audio import load_audio, spectrogram, melspectrogram, frames_to_hours
+from tacotron.hparams import hparams
+from tacotron.text import text_to_sequence
+from tacotron.utils import makedirs, remove_file, warning
+from tacotron.audio import load_audio, spectrogram, melspectrogram, frames_to_hours
 
 def one(x=None):
     return 1

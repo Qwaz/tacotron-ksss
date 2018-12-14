@@ -6,9 +6,9 @@ import operator
 from functools import partial
 from difflib import SequenceMatcher
 
-from audio.get_duration import get_durations
-from text import remove_puncuations, text_to_sequence
-from utils import load_json, write_json, parallel_run, remove_postfix, backup_file
+from ..audio.get_duration import get_durations
+from ..text import remove_puncuations, text_to_sequence
+from ..utils import load_json, write_json, parallel_run, remove_postfix, backup_file
 
 def plain_text(text):
     return "".join(remove_puncuations(text.strip()).split())

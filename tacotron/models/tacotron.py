@@ -1,12 +1,11 @@
 # Code based on https://github.com/keithito/tacotron/blob/master/models/tacotron.py
 
 import numpy as np
-import tensorflow as tf
-from tensorflow.contrib.seq2seq import BasicDecoder, BahdanauAttention, BahdanauMonotonicAttention
-from tensorflow.contrib.rnn import GRUCell, MultiRNNCell, OutputProjectionWrapper, ResidualWrapper
+from tensorflow.contrib.seq2seq import BasicDecoder, BahdanauMonotonicAttention
+from tensorflow.contrib.rnn import MultiRNNCell, OutputProjectionWrapper, ResidualWrapper
 
-from utils.infolog import log
-from text.symbols import symbols
+from ..utils.infolog import log
+from ..text.symbols import symbols
 
 from .modules import *
 from .helpers import TacoTestHelper, TacoTrainingHelper

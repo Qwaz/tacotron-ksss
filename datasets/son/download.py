@@ -8,7 +8,7 @@ import subprocess
 from functools import partial
 from bs4 import BeautifulSoup
 
-from utils import get_encoder_name, parallel_run, makedirs
+from tacotron.utils import get_encoder_name, parallel_run, makedirs
 
 API_URL = 'http://api.jtbc.joins.com/ad/pre/NV10173083'
 BASE_URL = 'http://nsvc.jtbc.joins.com/API/News/Newapp/Default.aspx'

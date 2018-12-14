@@ -6,8 +6,8 @@ import numpy as np
 from glob import glob
 from functools import partial
 
-from utils import parallel_run, remove_file, backup_file, write_json
-from audio import load_audio, save_audio, resample_audio, get_duration
+from ..utils import parallel_run, remove_file, backup_file, write_json
+from ..audio import load_audio, save_audio, resample_audio, get_duration
 
 def text_recognition(path, config):
     root, ext = os.path.splitext(path)

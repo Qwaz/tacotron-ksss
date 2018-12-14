@@ -1,4 +1,3 @@
-import os 
 import matplotlib
 from jamo import h2j, j2hcj
 
@@ -6,9 +5,8 @@ matplotlib.use('Agg')
 matplotlib.rc('font', family="NanumBarunGothic")
 import matplotlib.pyplot as plt
 
-from text import PAD, EOS
-from utils import add_postfix
-from text.korean import normalize
+from ..text import PAD, EOS
+from ..text.korean import normalize
 
 def plot(alignment, info, text, isKorean=True):
     char_len, audio_len = alignment.shape # 145, 200

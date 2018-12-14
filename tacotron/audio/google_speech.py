@@ -16,8 +16,8 @@ from google.cloud import speech
 from google.cloud.speech import enums
 from google.cloud.speech import types
 
-from utils import parallel_run
-from text import text_to_sequence
+from ..utils import parallel_run
+from ..text import text_to_sequence
 
 ####################################################
 # When one or two audio is missed in the middle

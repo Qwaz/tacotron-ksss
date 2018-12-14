@@ -9,11 +9,11 @@ from glob import glob
 import tensorflow as tf
 from collections import defaultdict
 
-import text
-from utils.infolog import log
-from utils import parallel_run, remove_file
-from audio import frames_to_hours
-from audio.get_duration import get_durations
+import tacotron.text
+from tacotron.utils.infolog import log
+from tacotron.utils import parallel_run, remove_file
+from tacotron.audio import frames_to_hours
+from tacotron.audio.get_duration import get_durations
 
 
 _pad = 0

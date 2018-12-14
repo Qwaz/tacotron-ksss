@@ -1,9 +1,8 @@
 # Code based on https://github.com/keithito/tacotron/blob/master/util/audio.py
-import math
 import numpy as np
 import tensorflow as tf
 from scipy import signal
-from hparams import hparams
+from ..hparams import hparams
 
 import librosa
 import librosa.filters

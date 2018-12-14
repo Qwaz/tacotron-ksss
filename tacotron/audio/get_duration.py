@@ -6,7 +6,7 @@ from tinytag import TinyTag
 from collections import defaultdict
 from multiprocessing.dummy import Pool
 
-from utils import load_json
+from ..utils import load_json
 
 def second_to_hour(sec):
     return str(datetime.timedelta(seconds=int(sec)))

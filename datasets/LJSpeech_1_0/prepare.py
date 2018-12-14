@@ -8,7 +8,7 @@ that can be processed into .npz file using datasets.generate_data.
 @author: engiecat (github)
 """
 import os
-from utils import load_json, write_json, backup_file, str2bool
+from tacotron.utils import load_json, write_json, backup_file, str2bool
 import argparse
 
 base_dir = os.path.dirname(os.path.realpath(__file__))

@@ -11,9 +11,9 @@ from pydub import silence
 from pydub import AudioSegment
 from functools import partial
 
-from hparams import hparams
-from utils import parallel_run, add_postfix
-from audio import load_audio, save_audio, get_duration, get_silence
+from ..hparams import hparams
+from ..utils import parallel_run, add_postfix
+from ..audio import load_audio, save_audio, get_duration, get_silence
 
 def abs_mean(x):
     return abs(x).mean()

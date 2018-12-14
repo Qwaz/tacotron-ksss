@@ -10,15 +10,15 @@ import tensorflow as tf
 from datetime import datetime
 from functools import partial
 
-from hparams import hparams, hparams_debug_string
-from models import create_model, get_most_recent_checkpoint
+from tacotron.hparams import hparams, hparams_debug_string
+from tacotron.models import create_model, get_most_recent_checkpoint
 
-from utils import ValueWindow, prepare_dirs
-from utils import infolog, warning, plot, load_hparams
-from utils import get_git_revision_hash, get_git_diff, str2bool, parallel_run
+from tacotron.utils import ValueWindow, prepare_dirs
+from tacotron.utils import infolog, warning, plot, load_hparams
+from tacotron.utils import get_git_revision_hash, get_git_diff, str2bool, parallel_run
 
-from audio import save_audio, inv_spectrogram
-from text import sequence_to_text, text_to_sequence
+from tacotron.audio import save_audio, inv_spectrogram
+from tacotron.text import sequence_to_text, text_to_sequence
 from datasets.datafeeder import DataFeeder, _prepare_inputs
 
 log = infolog.log
@@ -293,9 +293,9 @@ def main():
 
     parser.add_argument('--num_test_per_speaker', type=int, default=2)
     parser.add_argument('--random_seed', type=int, default=42)
-    parser.add_argument('--summary_interval', type=int, default=50)
-    parser.add_argument('--test_interval', type=int, default=250)
-    parser.add_argument('--checkpoint_interval', type=int, default=500)
+    parser.add_argument('--summary_interval', type=int, default=2)
+    parser.add_argument('--test_interval', type=int, default=4)
+    parser.add_argument('--checkpoint_interval', type=int, default=8)
     parser.add_argument('--skip_path_filter',
             type=str2bool, default=False, help='Use only for debugging')
 

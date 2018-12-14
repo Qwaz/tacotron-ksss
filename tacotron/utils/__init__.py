@@ -58,7 +58,7 @@ def prepare_dirs(config, hparams):
         setattr(hparams, "num_speakers", len(config.datasets))
 
         save_hparams(config.model_dir, hparams)
-        copy_file("hparams.py", os.path.join(config.model_dir, "hparams.py"))
+        copy_file("./tacotron/hparams.py", os.path.join(config.model_dir, "hparams.py"))
 
 def makedirs(path):
     if not os.path.exists(path):

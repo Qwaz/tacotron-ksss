@@ -6,7 +6,7 @@ import requests
 from bs4 import BeautifulSoup
 from functools import partial
 
-from utils import download_with_url, makedirs, parallel_run
+from tacotron.utils import download_with_url, makedirs, parallel_run
 
 base_path = os.path.dirname(os.path.realpath(__file__))
 RSS_URL = "http://enabler.kbs.co.kr/api/podcast_channel/feed.xml?channel_id=R2010-0440"
