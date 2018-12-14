@@ -1,5 +1,7 @@
 # Multi-Speaker Tacotron in TensorFlow
 
+This is a forked version of [multi-speaker-tacotron-tensorflow](https://github.com/carpedm20/multi-speaker-tacotron-tensorflow). The codes are updated to support the latest Tensorflow (1.12) and [Korean Single Speaker Speech](https://www.kaggle.com/bryanpark/korean-single-speaker-speech-dataset/home) dataset.
+
 TensorFlow implementation of:
 
 - [Deep Voice 2: Multi-Speaker Neural Text-to-Speech](https://arxiv.org/abs/1705.08947)
@@ -68,13 +70,13 @@ After you prepare as described, you should genearte preprocessed data with:
 
 Follow below commands. (explain with `Korean Single Speaker Speech` dataset)
 
-0. [Download KSSS dataset](https://www.kaggle.com/bryanpark/korean-single-speaker-speech-dataset/home). Extract the contents under `datasets/ksss/KoreanSingleSpeakerSpeech` directory. The directory should contain `1`, `2`, `3`, `4` directory and `transcript.txt`.
+1. [Download KSSS dataset](https://www.kaggle.com/bryanpark/korean-single-speaker-speech-dataset/home). Extract the contents under `datasets/ksss/KoreanSingleSpeakerSpeech` directory. The directory should contain `1`, `2`, `3`, `4` directory and `transcript.txt`.
 
-1. Generate the alignment file.
+2. Generate the alignment file.
 
     python datasets/ksss/generator.py
 
-2. Finally, generate numpy files which will be used in training.
+3. Finally, generate numpy files which will be used in training.
 
     python -m datasets.generate_data ./datasets/ksss/alignment.json
 
@@ -142,17 +144,7 @@ Training attention on multi speaker model:
 ![model](./assets/attention_multi_speaker.gif)
 
 
-## Disclaimer
-
-This is not an official [DEVSISTERS](http://devsisters.com/) product. This project is not responsible for misuse or for any damage that you may cause. You agree that you use this software at your own risk.
-
-
 ## References
 
 - [Keith Ito](https://github.com/keithito)'s [tacotron](https://github.com/keithito/tacotron)
 - [DEVIEW 2017 presentation](https://www.slideshare.net/carpedm20/deview-2017-80824162)
-
-
-## Author
-
-Taehoon Kim / [@carpedm20](http://carpedm20.github.io/)
