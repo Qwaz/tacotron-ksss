@@ -101,17 +101,17 @@ The important hyperparameters for a models are defined in `hparams.py`.
 
 To train a single-speaker model:
 
-    python train.py --data_path=datasets/son
-    python train.py --data_path=datasets/son --initialize_path=PATH_TO_CHECKPOINT
+    python train.py --data_path=datasets/ksss
+    python train.py --data_path=datasets/ksss --initialize_path=PATH_TO_CHECKPOINT
 
 To train a multi-speaker model:
 
     # after change `model_type` in `hparams.py` to `deepvoice` or `simple`
     python train.py --data_path=datasets/son1,datasets/son2
 
-To restart a training from previous experiments such as `logs/son-20171015`:
+To restart a training from previous experiments such as `logs/ksss-20171015`:
 
-    python train.py --data_path=datasets/son --load_path logs/son-20171015
+    python train.py --data_path=datasets/ksss --load_path logs/ksss-20171015
 
 If you don't have good and enough (10+ hours) dataset, it would be better to use `--initialize_path` to use a well-trained model as initial parameters.
 
@@ -120,11 +120,11 @@ If you don't have good and enough (10+ hours) dataset, it would be better to use
 
 You can train your own models with:
 
-    python app.py --load_path logs/son-20171015 --num_speakers=1
+    python app.py --load_path ksss-pretrained --num_speakers=1
 
 or generate audio directly with:
 
-    python synthesizer.py --load_path logs/son-20171015 --text "이거 실화냐?"
+    python synthesizer.py --load_path ksss-pretrained --text "이거 실화냐?"
 
 ### 4-1. Synthesizing non-korean(english) audio
 
